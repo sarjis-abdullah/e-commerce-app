@@ -1,20 +1,6 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 import { CheckIcon, ClockIcon } from '@heroicons/react/20/solid'
 
-const products = [
+const products:Array<IProduct> = [
   {
     id: 1,
     name: 'Nomad Tumbler',
@@ -22,6 +8,7 @@ const products = [
     price: '$35.00',
     color: 'White',
     inStock: true,
+    size: "Small",
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-03.jpg',
     imageAlt: 'Insulated bottle with white base and black snap lid.',
   },
@@ -38,19 +25,31 @@ const products = [
   },
   // More products...
 ]
-
+interface IProduct {
+    id: any;
+    imageSrc: string;
+    imageAlt: string;
+    name: string;
+    color: string;
+    price: string;
+    href: string;
+    size: string;
+    inStock: boolean;
+    // leadTime: any;
+  
+}
 const ProductCart =()=> {
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+      <div className="px-4 py-12 sm:px-6 sm:py-12 lg:px-8" >
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">Shopping Cart</h1>
 
-        <form className="mt-12">
+        <section className="grid mt-12" style={{gridTemplateColumns: "55% 45%"}}>
           <div>
             <h2 className="sr-only">Items in your shopping cart</h2>
 
             <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200">
-              {products.map((product, productIdx) => (
+              {products.map((product: IProduct, productIdx: number) => (
                 <li key={product.id} className="flex py-6 sm:py-10">
                   <div className="flex-shrink-0">
                     <img
@@ -111,7 +110,7 @@ const ProductCart =()=> {
                         <ClockIcon className="h-5 w-5 flex-shrink-0 text-gray-300" aria-hidden="true" />
                       )}
 
-                      <span>{product.inStock ? 'In stock' : `Ships in ${product.leadTime}`}</span>
+                      {/* <span>{product.inStock ? 'In stock' : `Ships in ${product.leadTime}`}</span> */}
                     </p>
                   </div>
                 </li>
@@ -120,9 +119,9 @@ const ProductCart =()=> {
           </div>
 
           {/* Order summary */}
-          <div className="mt-10 sm:ml-32 sm:pl-6">
+          <div className="border-b border-t border-gray-200 sm:ml-32 sm:pl-6">
             <div className="rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:p-8">
-              <h2 className="sr-only">Order summary</h2>
+              <h2 className="mb-4">Order summary</h2>
 
               <div className="flow-root">
                 <dl className="-my-4 divide-y divide-gray-200 text-sm">
@@ -157,14 +156,14 @@ const ProductCart =()=> {
             <div className="mt-6 text-center text-sm text-gray-500">
               <p>
                 or
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 pl-2">
                   Continue Shopping
                   <span aria-hidden="true"> &rarr;</span>
                 </a>
               </p>
             </div>
           </div>
-        </form>
+        </section>
       </div>
     </div>
   )

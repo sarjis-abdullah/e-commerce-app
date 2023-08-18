@@ -40,19 +40,19 @@ const sortOptions = [
   { name: 'Newest', href: '#', current: false },
 ]
 
-function classNames(...classes) {
+function classNames(...classes: Array<string>) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function ProductFilters() {
   return (
     <div className="bg-white">
-      <div className="px-4 py-16 text-center sm:px-6 lg:px-8">
+      {/* <div className="px-4 py-16 text-center sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900">Workspace</h1>
         <p className="mx-auto mt-4 max-w-xl text-base text-gray-500">
           The secret to a tidy desk? Don't get rid of anything, just put it in really really nice looking containers.
         </p>
-      </div>
+      </div> */}
 
       {/* Filters */}
       <Disclosure

@@ -26,5 +26,7 @@ body {
     rgb(var(--background-start-rgb));
 }
 .segment-outer{
-  @apply mx-auto max-w-screen-2xl px-6 py-12 font-sans md:px-12 md:py-20 leading-relaxed text-slate-400 antialiased
+  @apply mx-auto max-w-screen-2xl; 
+  @apply px-6 py-12 font-sans md:px-12 md:pb-20 md:pt-16 leading-relaxed ;
+  @apply text-slate-400 antialiased;
 }

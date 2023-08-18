@@ -18,9 +18,9 @@ const config: Config = {
   plugins: [
     // require("@tailwindcss/typography"),
     // require("@tailwindcss/aspect-ratio"),
-    function ({ addVariant, e }) {
-      addVariant('group-hover', ({ modifySelectors, separator }) => {
-        modifySelectors(({ className }) => {
+    function ({ addVariant, e }: any) {
+      addVariant('group-hover', ({ modifySelectors, separator }: any) => {
+        modifySelectors(({ className } : any) => {
           return `.group:hover .${e(`group-hover${separator}${className}`)}`;
         });
       });

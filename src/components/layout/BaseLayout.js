@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+import Header from "../Header";
 
-const BaseLayout = ({children}) => {
+const BaseLayout = ({ children }) => {
   return (
-    <section className="segment-outer">
-      {children}
+    <section>
+      <Header />
+      <section className="segment-outer">{children}</section>
     </section>
-  )
-}
+  );
+};
 
-export default BaseLayout
+export default BaseLayout;

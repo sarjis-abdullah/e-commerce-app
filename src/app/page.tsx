@@ -1,9 +1,15 @@
 import Products from "@/components/product/Products";
+import ProductFilters from "@/components/product/ProductFilters";
+import BaseLayout from "@/components/layout/BaseLayout";
+import React from "react";
 
-export default function Home() {
+const page = () => {
   return (
-    <main className="segment-outer">
-      <Products></Products>
-    </main>
+    <BaseLayout>
+      <ProductFilters />
+      <Products />
+    </BaseLayout>
   );
-}
+};
+
+export default page;
