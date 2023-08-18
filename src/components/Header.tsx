@@ -1,6 +1,7 @@
 "use client";
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
+import {useAppSelector} from '@/redux/hooks';
 import {
   MagnifyingGlassIcon,
   ShoppingBagIcon,
@@ -19,6 +20,7 @@ function classNames(...classes: Array<string>) {
 }
 
 export default function Header() {
+  const cartProductsCount = useAppSelector((state) => state.cartReducer.cartProductsCount);
   return (
     <div className="bg-white font-sans ">
       <header className="fixed w-full bg-white px-6 md:px-12 z-10">
@@ -70,7 +72,7 @@ export default function Header() {
                       aria-hidden="true"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
+                      {cartProductsCount}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </Link>

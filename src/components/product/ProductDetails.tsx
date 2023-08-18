@@ -3,8 +3,11 @@ import { useState } from "react";
 import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import { add } from "@/redux/features/cartSlice";
 
 const product = {
+  id: 1,
   name: "Zip Tote Basket",
   price: "$140",
   rating: 4,
@@ -56,7 +59,8 @@ function classNames(...classes: Array<string>) {
 
 const ProductDetails = () => {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-
+  const count = useAppSelector((state) => state.cartReducer.value);
+  const dispatch = useAppDispatch();
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
@@ -197,6 +201,7 @@ const ProductDetails = () => {
 
               <div className="mt-10 flex">
                 <button
+                  onClick={() => dispatch(add(product))}
                   type="button"
                   className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
                 >
