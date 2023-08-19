@@ -2,13 +2,13 @@
 import Link from "next/link";
 import React from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
-import { IProduct } from "@/redux/services/productApi";
-import { add, decrement, productItem } from "@/redux/features/cartSlice";
+import { add, decrement } from "@/redux/features/cartSlice";
 import { StarIcon, EyeIcon } from "@heroicons/react/20/solid";
 import RatingStar from "@/components/common/RatingStar";
+import { IProduct } from "@/redux/features/productSlice";
 
 interface propsProduct {
-  product: productItem;
+  product: IProduct;
 }
 const ProductSingle = ({ product }: any) => {
   const dispatch = useAppDispatch();

@@ -1,8 +1,8 @@
 import React from "react";
-import { IProduct } from "@/redux/services/productApi";
 import Link from "next/link";
 import { useAppDispatch } from "@/redux/hooks";
 import { add, remove, decrement } from "@/redux/features/cartSlice";
+import { IProduct } from "@/redux/features/productSlice";
 interface propsProduct {
   product: IProduct;
 }

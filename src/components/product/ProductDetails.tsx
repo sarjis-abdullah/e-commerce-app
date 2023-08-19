@@ -4,11 +4,12 @@ import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
-import { add, decrement, productItem } from "@/redux/features/cartSlice";
-import { useGetProductByIdQuery, IProduct } from "@/redux/services/productApi";
+import { add, decrement } from "@/redux/features/cartSlice";
+import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import Spiner from "@/components/common/Spiner";
 import RatingStar from "@/components/common/RatingStar";
 import Link from "next/link";
+import { IProduct } from "@/redux/features/productSlice";
 
 function classNames(...classes: Array<string>) {
   return classes.filter(Boolean).join(" ");

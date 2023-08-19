@@ -1,24 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { IProduct } from "./productSlice";
 
 export interface cartState {
   value: number;
   cartProductsCount: number;
-  cartProducts: Array<productItem>;
-};
-export interface productItem {
-  id: number;
-  title: string;
-  price: never;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rating: number,
-    count: number,
-  };
-  quantity: number;
-  invidualTotal: number;
+  cartProducts: Array<IProduct>;
 };
 
 const initialState: cartState = {
@@ -27,13 +14,13 @@ const initialState: cartState = {
   cartProductsCount: 0,
 };
 
-const isProductAlreadyInCart = (cartProducts: Array<productItem>, newProduct: productItem)=> cartProducts.find(item=> item.id === newProduct.id)
+const isProductAlreadyInCart = (cartProducts: Array<IProduct>, newProduct: IProduct)=> cartProducts.find(item=> item.id === newProduct.id)
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<productItem[]>) => {
+    add: (state, action: PayloadAction<any>) => {
       const payload: any = {...action.payload}
       const {cartProducts} = state
       if (isProductAlreadyInCart(cartProducts, payload)) {
@@ -53,7 +40,7 @@ export const cartSlice = createSlice({
         state.cartProducts = [...cartProducts, {...payload, quantity: 1, invidualTotal: payload.price}]
       }
     },
-    decrement: (state, action: PayloadAction<productItem[]>) => {
+    decrement: (state, action: PayloadAction<any>) => {
       const payload: any = {...action.payload}
       const {cartProducts} = state
       if (isProductAlreadyInCart(cartProducts, payload)) {
@@ -71,13 +58,13 @@ export const cartSlice = createSlice({
             quantity: newQty,
             invidualTotal: parseFloat(item.price) * newQty
           }
-        }).filter(item => item != null) as productItem[];
+        }).filter(item => item != null) as IProduct[];
       }else{
         ++state.cartProductsCount
         state.cartProducts = [...cartProducts, {...payload, quantity: 1, invidualTotal: payload.price}]
       }
     },
-    remove: (state, action: PayloadAction<productItem[]>) => {
+    remove: (state, action: PayloadAction<any>) => {
       const payload: any = {...action.payload}
       const {cartProducts} = state
       --state.cartProductsCount

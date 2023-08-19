@@ -2,23 +2,10 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { CheckIcon, ClockIcon } from "@heroicons/react/20/solid";
 import { add, remove, removeAll } from "@/redux/features/cartSlice";
-// import { IProduct } from "@/redux/services/productApi";
 import Link from "next/link";
 import { ProductCartSingle } from "./ProductCartSingle";
-interface IProduct {
-  id: number;
-  title: string;
-  image: string;
-  description: string;
-  price: number;
-  category: string;
-  rating: {
-    rate: number,
-    count: number,
-  };
-  quantity: number;
-  invidualTotal: number;
-}
+import { IProduct } from "@/redux/features/productSlice";
+
 const ProductCart = () => {
   const dispatch = useAppDispatch();
   const cartProducts: Array<any> = useAppSelector(
