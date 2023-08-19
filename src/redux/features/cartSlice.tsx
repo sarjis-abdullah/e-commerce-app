@@ -15,6 +15,7 @@ export interface productItem {
   image: string;
   rating: object;
   quantity: number;
+  invidualTotal: number;
 };
 
 const initialState: cartState = {
@@ -34,14 +35,43 @@ export const cartSlice = createSlice({
       const {cartProducts} = state
       if (isProductAlreadyInCart(cartProducts, payload)) {
         state.cartProducts = cartProducts.map(item=> {
+          if (payload.id != item.id) {
+            return item
+          }
+          const newQty = item.quantity + 1
           return {
             ...item,
-            quantity: item.quantity + 1
+            quantity: newQty,
+            invidualTotal: Number(newQty * item.price).toFixed(2)
           }
         })
       }else{
         ++state.cartProductsCount
-        state.cartProducts = [...cartProducts, {...payload, quantity: 1}]
+        state.cartProducts = [...cartProducts, {...payload, quantity: 1, invidualTotal: payload.price}]
+      }
+    },
+    decrement: (state, action) => {
+      const payload = {...action.payload}
+      const {cartProducts} = state
+      if (isProductAlreadyInCart(cartProducts, payload)) {
+        state.cartProducts = cartProducts.map(item=> {
+          if (payload.id != item.id) {
+            return item
+          }
+          const newQty = item.quantity - 1
+          if (newQty == 0) {
+            --state.cartProductsCount
+            return null
+          }
+          return {
+            ...item,
+            quantity: newQty,
+            invidualTotal: Number(newQty * item.price).toFixed(2)
+          }
+        }).filter(item => item != null)
+      }else{
+        ++state.cartProductsCount
+        state.cartProducts = [...cartProducts, {...payload, quantity: 1, invidualTotal: payload.price}]
       }
     },
     remove: (state, action) => {
@@ -50,10 +80,14 @@ export const cartSlice = createSlice({
       --state.cartProductsCount
       state.cartProducts = cartProducts.filter(item=> item.id != payload.id)
     },
+    removeAll: (state) => {
+      state.cartProductsCount = 0
+      state.cartProducts = []
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { add, remove } = cartSlice.actions;
+export const { add, remove, decrement, removeAll } = cartSlice.actions;
 
 export default cartSlice.reducer;

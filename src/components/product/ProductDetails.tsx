@@ -4,10 +4,11 @@ import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
-import { add } from "@/redux/features/cartSlice";
+import { add, decrement } from "@/redux/features/cartSlice";
 import { useGetProductByIdQuery, IProduct } from "@/redux/services/productApi";
 import Spiner from "@/components/common/Spiner";
 import RatingStar from "@/components/common/RatingStar";
+import Link from "next/link";
 
 function classNames(...classes: Array<string>) {
   return classes.filter(Boolean).join(" ");
@@ -19,6 +20,12 @@ interface IProductId {
 const ProductDetails = ({ id }: IProductId) => {
   const dispatch: any = useAppDispatch();
   const { isLoading, isFetching, data, error } = useGetProductByIdQuery({ id });
+  const cartProducts = useAppSelector(
+    (state) => state.cartReducer.cartProducts
+  );
+
+  const cartProduct = cartProducts.find((item) => item.id == id);
+  const isProductInCart = cartProduct ? true : false;
   const product: IProduct = data as IProduct;
   if (!product?.title || isLoading) {
     return <Spiner />;
@@ -76,9 +83,7 @@ const ProductDetails = ({ id }: IProductId) => {
               <p className="text-3xl tracking-tight text-gray-900">
                 ${product.price}
               </p>
-              <div
-                className="inline-flex mb-0 px-2 shadow-none outline-none transition-all duration-300 border rounded-lg"
-              >
+              <div className="inline-flex mb-0 px-2 shadow-none outline-none transition-all duration-300 border rounded-lg">
                 {product.category}
               </div>
             </div>
@@ -104,65 +109,50 @@ const ProductDetails = ({ id }: IProductId) => {
 
             <form className="mt-6">
               <div className="mt-10 flex">
-                <button
-                  onClick={() => dispatch(add(product))}
-                  type="button"
-                  className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
-                >
-                  Add to bag
-                </button>
+                {!isProductInCart ? (
+                  <button
+                    onClick={() => dispatch(add(product))}
+                    type="button"
+                    className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                  >
+                    Add to bag
+                  </button>
+                ) : (
+                  <>
+                    <section className="flex items-center">
+                      <div>
+                        <button
+                          type="button"
+                          // disabled={cartProduct.quantity < 2}
+                          onClick={() => dispatch(decrement(product))}
+                          className="px-6 py-2 bg-indigo-600 text-white rounded-tl-lg rounded-bl-lg"
+                        >
+                          -
+                        </button>
+                      </div>
+                      <div className="px-10 py-2 font-medium bg-indigo-600 text-white border-r border-l">{cartProduct.quantity}</div>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => dispatch(add(product))}
+                          className="px-6 py-2 bg-indigo-600 text-white rounded-tr-lg rounded-br-lg"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <div>
+                        <Link
+                          href={'/cart'}
+                          className="px-8 py-2 text-indigo-600"
+                        >
+                          Cart <span aria-hidden="true"> →</span>
+                        </Link>
+                      </div>
+                    </section>
+                  </>
+                )}
               </div>
             </form>
-
-            <section aria-labelledby="details-heading" className="mt-12">
-              <h2 id="details-heading" className="sr-only">
-                Additional details
-              </h2>
-
-              <div className="divide-y divide-gray-200 border-t">
-                {/* <Disclosure as="div" key={detail.name}>
-                    {({ open }) => (
-                      <>
-                        <h3>
-                          <Disclosure.Button className="group relative flex w-full items-center justify-between py-6 text-left">
-                            <span
-                              className={classNames(
-                                open ? "text-indigo-600" : "text-gray-900",
-                                "text-sm font-medium"
-                              )}
-                            >
-                              {detail.name}
-                            </span>
-                            <span className="ml-6 flex items-center">
-                              {open ? (
-                                <MinusIcon
-                                  className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <PlusIcon
-                                  className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                  aria-hidden="true"
-                                />
-                              )}
-                            </span>
-                          </Disclosure.Button>
-                        </h3>
-                        <Disclosure.Panel
-                          as="div"
-                          className="prose prose-sm pb-6"
-                        >
-                          <ul role="list">
-                            {detail.items.map((item) => (
-                              <li key={item}>{item}</li>
-                            ))}
-                          </ul>
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure> */}
-              </div>
-            </section>
           </div>
         </div>
       </div>

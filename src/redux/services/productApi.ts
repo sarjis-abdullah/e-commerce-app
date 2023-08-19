@@ -9,6 +9,8 @@ export interface IProduct {
   price: number;
   category: string;
   rating: object;
+  quantity: number;
+  invidualTotal: number;
 };
 
 export const productApi = createApi({

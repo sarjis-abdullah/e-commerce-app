@@ -89,7 +89,7 @@ export default function ProductFilters() {
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-4 px-4 text-sm sm:px-6 md:gap-x-6 lg:px-8">
             <div className="grid auto-rows-min grid-cols-1 gap-y-10 md:grid-cols-2 md:gap-x-6">
               <fieldset>
-                <legend className="block font-medium">Category</legend>
+                <legend className="block font-medium">Sort by</legend>
                 <select
                   name="filterCategories"
                   onChange={handleSortOnchange}
