@@ -23,7 +23,7 @@ const ProductCart = () => {
   const shippingCharge = 5;
   const tax = 10;
 
-  const totalPrice = totalCartProductSum + shippingCharge + tax;
+  const totalPrice = parseFloat(totalCartProductSum + shippingCharge + tax).toFixed(2);
 
   const hasCarts = cartProducts?.length;
 
@@ -36,8 +36,8 @@ const ProductCart = () => {
     }
   };
   return (
-    <div className="bg-white">
-      <div className="px-4 py-12 sm:px-6 sm:py-12 lg:px-8">
+    <div className="bg-white lg:px-12">
+      <div className="py-12 sm:py-12 ">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             Shopping Cart
@@ -85,7 +85,7 @@ const ProductCart = () => {
 
           {/* Order summary */}
           {hasCarts ? (
-            <div className="border-b border-t border-gray-200 sm:pl-6 lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:flex-col lg:justify-between">
+            <div className="border-b border-t border-gray-200 sm:pl-6">
               <div className="rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:p-8">
                 <h2 className="mb-4">Order summary</h2>
 
