@@ -45,7 +45,7 @@ const ProductCart =()=> {
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">Shopping Cart</h1>
 
         <section className="grid mt-12" style={{gridTemplateColumns: "55% 45%"}}>
-          <div>
+          <div className='mb-16 scroll-mt-16 xl:scroll-mt-24'>
             <h2 className="sr-only">Items in your shopping cart</h2>
 
             <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200">
@@ -119,7 +119,7 @@ const ProductCart =()=> {
           </div>
 
           {/* Order summary */}
-          <div className="border-b border-t border-gray-200 sm:ml-32 sm:pl-6">
+          <div className="border-b border-t border-gray-200 sm:ml-32 sm:pl-6 lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:flex-col lg:justify-between lg:py-24">
             <div className="rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:p-8">
               <h2 className="mb-4">Order summary</h2>
 

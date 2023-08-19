@@ -1,77 +1,45 @@
+"use client";
 import React from "react";
 import ProductSingle from "./ProductSingle";
-
-const products = [
-  {
-    id: 2,
-    name: "Zip Tote Basket",
-    color: "White and black",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
-    imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    price: "$140",
-  },
-  {
-    id: 3,
-    name: "Zip Tote Basket",
-    color: "White and black",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
-    imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    price: "$140",
-  },
-  {
-    id: 1,
-    name: "Zip Tote Basket",
-    color: "White and black",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
-    imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    price: "$140",
-  },
-  {
-    id: 4,
-    name: "Zip Tote Basket",
-    color: "White and black",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
-    imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    price: "$140",
-  },
-  {
-    id: 5,
-    name: "Zip Tote Basket",
-    color: "White and black",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
-    imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    price: "$140",
-  },
-  // More products...
-];
+import { useGetProductsQuery } from "@/redux/services/productApi";
+import Spiner from '@/components/common/Spiner';
+import { useAppDispatch } from "@/redux/hooks";
+import { setProducts } from "@/redux/features/productSlice";
+import {useAppSelector} from '@/redux/hooks';
 
 const Products = () => {
+  const {
+    isLoading,
+    isFetching,
+    data: products,
+    error,
+  } = useGetProductsQuery({searchQuery: ""});
+
+  const dispatch = useAppDispatch();
+  const stateProducts = useAppSelector((state) => state.productReducer.products);
+
+  React.useEffect(() => {
+    if (products?.length) {
+      dispatch(setProducts(products));
+    }
+  }, [products, dispatch]);
+
+  if (isLoading) {
+    return <Spiner />;
+  }
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="text-xl font-bold text-gray-900">
-          Customers also bought
+          Favourite shopping of last months
         </h2>
 
         <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
-            <ProductSingle key={product.id} product={product}/>
-          ))}
+          {stateProducts?.length &&
+            stateProducts.map((product) => (
+              <ProductSingle key={product.id} product={product} />
+            ))}
         </div>
       </div>
     </div>

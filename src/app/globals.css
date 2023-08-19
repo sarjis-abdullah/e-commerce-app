@@ -30,3 +30,11 @@ body {
   @apply px-6 py-12 font-sans md:px-12 md:pb-20 md:pt-16 leading-relaxed ;
   @apply text-slate-400 antialiased;
 }
+.max-lines {
+  display: block;/* or inline-block */
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 1.6em;
+  line-height: 1.8em;
+}

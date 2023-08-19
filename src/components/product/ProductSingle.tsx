@@ -2,61 +2,60 @@
 import Link from "next/link";
 import React from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import { IProduct } from "@/redux/services/productApi";
 import { add } from "@/redux/features/cartSlice";
-interface IProduct {
-  product: {
-    id: number;
-    imageSrc: string;
-    imageAlt: string;
-    name: string;
-    color: string;
-    price: string;
-    href: string;
-  };
-}
-const ProductSingle = ({ product }: IProduct) => {
-  const dispatch = useAppDispatch();
+import { StarIcon, EyeIcon } from "@heroicons/react/20/solid";
+import RatingStar from '@/components/common/RatingStar';
 
+interface propsProduct {
+  product: IProduct;
+}
+const ProductSingle = ({ product }: propsProduct) => {
+  const dispatch = useAppDispatch();
+  function classNames(...classes: Array<string>) {
+    return classes.filter(Boolean).join(" ");
+  }
   return (
     <figure>
-      <Link href={"product/" + product.id}>
-        <div className="relative">
-          <div className="relative h-72 w-full overflow-hidden rounded-lg">
-            <img
-              src={product.imageSrc}
-              alt={product.imageAlt}
-              className="h-full w-full object-cover object-center"
-            />
+      <div
+        key={product.id}
+        className="group relative border-b border-r border-gray-200 p-4 sm:p-6"
+      >
+        {/* <Link href={"product/" + product.id}> */}
+        <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="h-full w-full object-cover object-center"
+          />
+        </div>
+        {/* </Link> */}
+        <div className="pb-4 pt-10 text-center">
+          <h3 className="text-sm font-medium text-gray-900 max-lines">
+            {product.title}
+          </h3>
+          <div className="mt-3 flex flex-col items-center">
+            <p className="sr-only">{product.rating.rate} out of 5 stars</p>
+            <div className="flex items-center">
+            <RatingStar rating={product.rating}/>
+            </div>
           </div>
-          <div className="relative mt-4">
-            <h3 className="text-sm font-medium text-gray-900">
-              {product.name}
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-          </div>
-          <div className="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
-            />
-            <p className="relative text-lg font-semibold text-white">
-              {product.price}
-            </p>
+          <p className="mt-4 text-base font-medium text-gray-900">
+            ${product.price}
+          </p>
+          <div className="mt-6 flex items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => dispatch(add(product))}
+              className="rounded-md border border-transparent bg-indigo-600 px-4 py-1 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+            >
+              Add to bag
+            </button>
+            <Link href={"product/" + product.id}>
+                <EyeIcon className="h-5 w-5 flex-shrink-0"></EyeIcon>
+              </Link>
           </div>
         </div>
-      </Link>
-      {/* <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-      <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p> */}
-      <div className="mt-6">
-        <button onClick={() => dispatch(add(product))} className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full">
-          Add to bag
-        </button>
-        {/* <a
-          href={product.href}
-          className="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
-        >
-          Add to bag<span className="sr-only">, {product.name}</span>
-        </a> */}
       </div>
     </figure>
   );
