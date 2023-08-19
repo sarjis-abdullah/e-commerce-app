@@ -6,12 +6,15 @@ import { useGetCategoriesQuery } from "@/redux/services/categoryApi";
 import { useGetProductsQuery } from "@/redux/services/productApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { setProducts } from "@/redux/features/productSlice";
-
+interface ISortItem {
+  [key:string]: string
+}
 export default function ProductFilters() {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const [selectedSort, setSelectedSort] = React.useState("asc");
-  const sortByList: Array<object> = [
+  
+  const sortByList: Array<ISortItem> = [
     { title: "Ascending", code: "asc" },
     { title: "Descending", code: "desc" },
   ];
@@ -21,7 +24,7 @@ export default function ProductFilters() {
   const dispatch = useAppDispatch();
   const { data, error, isLoading } = useGetCategoriesQuery(null);
   const filterCategories: Array<string> = data as Array<string>;
-  const handleCategoryOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCategoryOnchange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let value = `/category/${e.target.value}`;
     setSelectedCategory(e.target.value);
     if (selectedSort != "") {
@@ -29,7 +32,7 @@ export default function ProductFilters() {
     }
     setSearchQuery(value);
   };
-  const handleSortOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSortOnchange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     let value = `?sort=${e.target.value}`;
     setSelectedSort(e.target.value);
     if (selectedCategory != "") {

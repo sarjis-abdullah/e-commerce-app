@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { IProduct } from "../services/productApi";
 
 export interface productState {
   products: Array<productItem>;
@@ -11,7 +12,10 @@ export interface productItem {
   description: string;
   category: string;
   image: string;
-  rating: object;
+  rating?: {
+    count: number,
+    rate: number,
+  };
   quantity: number;
 };
 
@@ -23,7 +27,7 @@ export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    setProducts: (state, action: Array<object>) => {
+    setProducts: (state, action: PayloadAction<productItem[]>) => {
       state.products = action.payload;
     },
   },

@@ -4,13 +4,15 @@ export interface IProduct {
   id: number;
   title: string;
   image: string;
-  name: string;
   description: string;
   price: number;
   category: string;
-  rating: object;
+  rating: {
+    rate: number,
+    count: number,
+  };
   quantity: number;
-  invidualTotal: number;
+  invidualTotal?: number;
 };
 
 export const productApi = createApi({

@@ -3,14 +3,14 @@ import Link from "next/link";
 import React from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { IProduct } from "@/redux/services/productApi";
-import { add, decrement } from "@/redux/features/cartSlice";
+import { add, decrement, productItem } from "@/redux/features/cartSlice";
 import { StarIcon, EyeIcon } from "@heroicons/react/20/solid";
 import RatingStar from "@/components/common/RatingStar";
 
 interface propsProduct {
-  product: IProduct;
+  product: productItem;
 }
-const ProductSingle = ({ product }: propsProduct) => {
+const ProductSingle = ({ product }: any) => {
   const dispatch = useAppDispatch();
   const cartProducts = useAppSelector(
     (state) => state.cartReducer.cartProducts
@@ -70,7 +70,7 @@ const ProductSingle = ({ product }: propsProduct) => {
                     </button>
                   </div>
                   <div className="px-10 py-1 font-medium bg-indigo-600 text-white border-r border-l">
-                    {cartProduct.quantity}
+                    {cartProduct?.quantity}
                   </div>
                   <div className="">
                     <button

@@ -13,7 +13,10 @@ export interface productItem {
   description: string;
   category: string;
   image: string;
-  rating: object;
+  rating: {
+    rating: number,
+    count: number,
+  };
   quantity: number;
   invidualTotal: number;
 };
@@ -30,8 +33,8 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    add: (state, action) => {
-      const payload = {...action.payload}
+    add: (state, action: PayloadAction<productItem[]>) => {
+      const payload: any = {...action.payload}
       const {cartProducts} = state
       if (isProductAlreadyInCart(cartProducts, payload)) {
         state.cartProducts = cartProducts.map(item=> {
@@ -42,7 +45,7 @@ export const cartSlice = createSlice({
           return {
             ...item,
             quantity: newQty,
-            invidualTotal: Number(newQty * item.price).toFixed(2)
+            invidualTotal: parseFloat(item?.price) * newQty
           }
         })
       }else{
@@ -50,8 +53,8 @@ export const cartSlice = createSlice({
         state.cartProducts = [...cartProducts, {...payload, quantity: 1, invidualTotal: payload.price}]
       }
     },
-    decrement: (state, action) => {
-      const payload = {...action.payload}
+    decrement: (state, action: PayloadAction<productItem[]>) => {
+      const payload: any = {...action.payload}
       const {cartProducts} = state
       if (isProductAlreadyInCart(cartProducts, payload)) {
         state.cartProducts = cartProducts.map(item=> {
@@ -66,19 +69,19 @@ export const cartSlice = createSlice({
           return {
             ...item,
             quantity: newQty,
-            invidualTotal: Number(newQty * item.price).toFixed(2)
+            invidualTotal: parseFloat(item.price) * newQty
           }
-        }).filter(item => item != null)
+        }).filter(item => item != null) as productItem[];
       }else{
         ++state.cartProductsCount
         state.cartProducts = [...cartProducts, {...payload, quantity: 1, invidualTotal: payload.price}]
       }
     },
-    remove: (state, action) => {
-      const payload = {...action.payload}
+    remove: (state, action: PayloadAction<productItem[]>) => {
+      const payload: any = {...action.payload}
       const {cartProducts} = state
       --state.cartProductsCount
-      state.cartProducts = cartProducts.filter(item=> item.id != payload.id)
+      state.cartProducts = cartProducts.filter(item=> item.id != payload?.id)
     },
     removeAll: (state) => {
       state.cartProductsCount = 0

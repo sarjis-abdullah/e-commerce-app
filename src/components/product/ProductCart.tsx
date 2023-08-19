@@ -9,17 +9,19 @@ interface IProduct {
   id: number;
   title: string;
   image: string;
-  name: string;
   description: string;
   price: number;
   category: string;
-  rating: object;
+  rating: {
+    rate: number,
+    count: number,
+  };
   quantity: number;
   invidualTotal: number;
 }
 const ProductCart = () => {
   const dispatch = useAppDispatch();
-  const cartProducts: Array<IProduct> = useAppSelector(
+  const cartProducts: Array<any> = useAppSelector(
     (state) => state.cartReducer.cartProducts
   );
 

@@ -4,7 +4,7 @@ import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
-import { add, decrement } from "@/redux/features/cartSlice";
+import { add, decrement, productItem } from "@/redux/features/cartSlice";
 import { useGetProductByIdQuery, IProduct } from "@/redux/services/productApi";
 import Spiner from "@/components/common/Spiner";
 import RatingStar from "@/components/common/RatingStar";
@@ -130,7 +130,7 @@ const ProductDetails = ({ id }: IProductId) => {
                           -
                         </button>
                       </div>
-                      <div className="px-10 py-2 font-medium bg-indigo-600 text-white border-r border-l">{cartProduct.quantity}</div>
+                      <div className="px-10 py-2 font-medium bg-indigo-600 text-white border-r border-l">{cartProduct?.quantity}</div>
                       <div>
                         <button
                           type="button"
