@@ -12,9 +12,7 @@ interface propsProduct {
 }
 const ProductSingle = ({ product }: propsProduct) => {
   const dispatch = useAppDispatch();
-  function classNames(...classes: Array<string>) {
-    return classes.filter(Boolean).join(" ");
-  }
+
   return (
     <figure>
       <div

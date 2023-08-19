@@ -1,60 +1,49 @@
-import { CheckIcon, ClockIcon } from '@heroicons/react/20/solid'
-
-const products:Array<IProduct> = [
-  {
-    id: 1,
-    name: 'Nomad Tumbler',
-    href: '#',
-    price: '$35.00',
-    color: 'White',
-    inStock: true,
-    size: "Small",
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-03.jpg',
-    imageAlt: 'Insulated bottle with white base and black snap lid.',
-  },
-  {
-    id: 2,
-    name: 'Basic Tee',
-    href: '#',
-    price: '$32.00',
-    color: 'Sienna',
-    inStock: true,
-    size: 'Large',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in sienna.",
-  },
-  // More products...
-]
+"use client";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { CheckIcon, ClockIcon } from "@heroicons/react/20/solid";
+import { add, remove } from "@/redux/features/cartSlice";
+// import { IProduct } from "@/redux/services/productApi";
+import Link from "next/link";
 interface IProduct {
-    id: any;
-    imageSrc: string;
-    imageAlt: string;
-    name: string;
-    color: string;
-    price: string;
-    href: string;
-    size: string;
-    inStock: boolean;
-    // leadTime: any;
-  
+  id: number;
+  title: string;
+  image: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  rating: object;
+  quantity: number;
 }
-const ProductCart =()=> {
+const ProductCart = () => {
+  const dispatch = useAppDispatch();
+  const cartProducts: Array<IProduct> = useAppSelector(
+    (state) => state.cartReducer.cartProducts
+  );
   return (
     <div className="bg-white">
-      <div className="px-4 py-12 sm:px-6 sm:py-12 lg:px-8" >
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Shopping Cart</h1>
+      <div className="px-4 py-12 sm:px-6 sm:py-12 lg:px-8">
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+          Shopping Cart
+        </h1>
 
-        <section className="grid mt-12" style={{gridTemplateColumns: "55% 45%"}}>
-          <div className='mb-16 scroll-mt-16 xl:scroll-mt-24'>
+        <section
+          className="grid mt-12"
+          style={{ gridTemplateColumns: "55% 45%" }}
+        >
+          <div className="mb-16 scroll-mt-16 xl:scroll-mt-24">
             <h2 className="sr-only">Items in your shopping cart</h2>
 
-            <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200">
-              {products.map((product: IProduct, productIdx: number) => (
+            <ul
+              role="list"
+              className="divide-y divide-gray-200 border-b border-t border-gray-200"
+            >
+              {cartProducts?.length ? cartProducts.map((product: IProduct, productIdx: number) => (
                 <li key={product.id} className="flex py-6 sm:py-10">
                   <div className="flex-shrink-0">
                     <img
-                      src={product.imageSrc}
-                      alt={product.imageAlt}
+                      src={product.image}
+                      alt={product.title}
                       className="h-24 w-24 rounded-lg object-cover object-center sm:h-32 sm:w-32"
                     />
                   </div>
@@ -64,37 +53,43 @@ const ProductCart =()=> {
                       <div className="flex justify-between sm:grid sm:grid-cols-2">
                         <div className="pr-6">
                           <h3 className="text-sm">
-                            <a href={product.href} className="font-medium text-gray-700 hover:text-gray-800">
-                              {product.name}
-                            </a>
+                            <Link
+                              href={`/product/${product.id}`}
+                              className="font-medium text-gray-700 hover:text-gray-800"
+                            >
+                              {product.title}
+                            </Link>
                           </h3>
-                          <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-                          {product.size ? <p className="mt-1 text-sm text-gray-500">{product.size}</p> : null}
                         </div>
 
-                        <p className="text-right text-sm font-medium text-gray-900">{product.price}</p>
+                        <p className="text-right text-sm font-medium text-gray-900">
+                          {product.price}
+                        </p>
                       </div>
 
                       <div className="mt-4 flex items-center sm:absolute sm:left-1/2 sm:top-0 sm:mt-0 sm:block">
-                        <label htmlFor={`quantity-${productIdx}`} className="sr-only">
-                          Quantity, {product.name}
-                        </label>
-                        <select
-                          id={`quantity-${productIdx}`}
-                          name={`quantity-${productIdx}`}
-                          className="block max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                        <label
+                          htmlFor={`quantity-${productIdx}`}
+                          className="sr-only"
                         >
-                          <option value={1}>1</option>
-                          <option value={2}>2</option>
-                          <option value={3}>3</option>
-                          <option value={4}>4</option>
-                          <option value={5}>5</option>
-                          <option value={6}>6</option>
-                          <option value={7}>7</option>
-                          <option value={8}>8</option>
-                        </select>
+                          Quantity, {product.quantity}
+                        </label>
+                        <section className="flex gap-2">
+                          <div>
+                            <button className="px-4 bg-indigo-600 text-white">
+                              -
+                            </button>
+                          </div>
+                          <div>{product.quantity}</div>
+                          <div>
+                            <button onClick={()=> dispatch(add(product))} className="px-4 bg-indigo-600 text-white">
+                              +
+                            </button>
+                          </div>
+                        </section>
 
                         <button
+                        onClick={()=> dispatch(remove(product))}
                           type="button"
                           className="ml-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 sm:ml-0 sm:mt-3"
                         >
@@ -102,19 +97,18 @@ const ProductCart =()=> {
                         </button>
                       </div>
                     </div>
-
-                    <p className="mt-4 flex space-x-2 text-sm text-gray-700">
-                      {product.inStock ? (
-                        <CheckIcon className="h-5 w-5 flex-shrink-0 text-green-500" aria-hidden="true" />
-                      ) : (
-                        <ClockIcon className="h-5 w-5 flex-shrink-0 text-gray-300" aria-hidden="true" />
-                      )}
-
-                      {/* <span>{product.inStock ? 'In stock' : `Ships in ${product.leadTime}`}</span> */}
-                    </p>
                   </div>
                 </li>
-              ))}
+              )) : <div className="text-center">
+                <h1>No item selected!</h1>
+                <Link
+                  href="/"
+                  className="font-medium text-indigo-600 hover:text-indigo-500 pl-2"
+                >
+                  Continue Shopping
+                  <span aria-hidden="true"> &rarr;</span>
+                </Link>
+                </div>}
             </ul>
           </div>
 
@@ -138,8 +132,12 @@ const ProductCart =()=> {
                     <dd className="font-medium text-gray-900">$8.32</dd>
                   </div>
                   <div className="flex items-center justify-between py-4">
-                    <dt className="text-base font-medium text-gray-900">Order total</dt>
-                    <dd className="text-base font-medium text-gray-900">$112.32</dd>
+                    <dt className="text-base font-medium text-gray-900">
+                      Order total
+                    </dt>
+                    <dd className="text-base font-medium text-gray-900">
+                      $112.32
+                    </dd>
                   </div>
                 </dl>
               </div>
@@ -156,17 +154,20 @@ const ProductCart =()=> {
             <div className="mt-6 text-center text-sm text-gray-500">
               <p>
                 or
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 pl-2">
+                <Link
+                  href="/"
+                  className="font-medium text-indigo-600 hover:text-indigo-500 pl-2"
+                >
                   Continue Shopping
                   <span aria-hidden="true"> &rarr;</span>
-                </a>
+                </Link>
               </p>
             </div>
           </div>
         </section>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductCart
+export default ProductCart;
